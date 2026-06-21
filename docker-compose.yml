@@ -30,6 +30,9 @@ services:
       SANDBOXED_COMPILES_HOST_DIR_OUTPUT: "/home/user/sharelatex_data/data/output"
       DOCKER_RUNNER: "true"
       SANDBOXED_COMPILES_SIBLING_CONTAINERS: "true"
+    networks:
+      - dokploy-network
+      - overleaf-network
 
   overleaf-mongo:
     restart: always
@@ -48,6 +51,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
+    networks:
+      - dokploy-network
+      - overleaf-network
 
   overleaf-redis:
     restart: always
@@ -55,3 +61,12 @@ services:
     container_name: overleaf-kodotiq-ojp4uc-redis
     volumes:
       - ~/overleaf_redis_data:/data
+    networks:
+      - dokploy-network
+      - overleaf-network
+
+networks:
+  dokploy-network:
+    external: true
+  overleaf-network:
+    driver: bridge
