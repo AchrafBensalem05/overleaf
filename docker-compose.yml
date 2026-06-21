@@ -15,24 +15,16 @@ services:
     stop_grace_period: 60s
     volumes:
       - ~/sharelatex_data:/var/lib/overleaf
-      # - /var/run/docker.sock:/var/run/docker.sock
     environment:
       OVERLEAF_APP_NAME: Overleaf Community Edition
-
-      OVERLEAF_MONGO_URL: mongodb://overleaf-mongo/sharelatex
-
+      OVERLEAF_MONGO_URL: mongodb://overleaf-mongo:27017/sharelatex?replicaSet=overleaf
       OVERLEAF_REDIS_HOST: overleaf-redis
       REDIS_HOST: overleaf-redis
-
       ENABLED_LINKED_FILE_TYPES: "project_file,project_output_file"
-
       ENABLE_CONVERSIONS: "true"
-
       EMAIL_CONFIRMATION_DISABLED: "true"
-
       OVERLEAF_SITE_URL: http://latex.kodotiq.com
       OVERLEAF_NAV_TITLE: Overleaf Community Edition
-
       SANDBOXED_COMPILES: "true"
       SANDBOXED_COMPILES_HOST_DIR_COMPILES: "/home/user/sharelatex_data/data/compiles"
       SANDBOXED_COMPILES_HOST_DIR_OUTPUT: "/home/user/sharelatex_data/data/output"
@@ -50,7 +42,7 @@ services:
     environment:
       MONGO_INITDB_DATABASE: sharelatex
     extra_hosts:
-      - overleaf-mongo:127.0.0.1
+      - mongo:127.0.0.1
     healthcheck:
       test: echo 'db.stats().ok' | mongosh localhost:27017/test --quiet
       interval: 10s
